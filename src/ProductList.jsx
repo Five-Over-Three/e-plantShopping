@@ -56,8 +56,8 @@ function ProductList({ onHomeClick }) {
 
     const handleAddToCart = (item) => {
         dispatch(addItem(item));
-        if (!addedToCart.includes(item)) {
-            setAddedToCart([...addedToCart, item]);
+        if (!addedToCart.includes(item.name)) {
+            setAddedToCart([...addedToCart, item.name]);
         }
     };
 
@@ -302,7 +302,8 @@ function ProductList({ onHomeClick }) {
                                         <div className="product-price">{item.cost}</div>
                                         <button
                                             className={`product-button ${addedToCart.includes(item.name) ? "added-to-cart" : ""}`}
-                                            onClick={() => handleAddToCart(item.name)}
+                                            onClick={() => handleAddToCart(item)}
+                                            disabled={addedToCart.includes(item.name)}
                                         >Add to cart</button>
                                     </div>
                                 ))}
