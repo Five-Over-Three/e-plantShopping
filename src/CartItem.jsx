@@ -8,27 +8,37 @@ const CartItem = ({ onContinueShopping }) => {
     const dispatch = useDispatch();
 
     const calculateTotalAmount = () => {
-
+        let totalCost = cart.reduce((total, item) => total + item.quantity * parseFloat(item.cost.substring(1)), 0);
+        return totalCost;
     };
 
     const handleContinueShopping = (e) => {
-
+        onContinueShopping(e);
     };
 
     const handleIncrement = (item) => {
-
+        dispatch(updateQuantity({name: item.name, quantity: item.quantity + 1}));
     };
 
     const handleDecrement = (item) => {
-
+        if (item.quantity > 1) {
+            dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+        } else {
+            dispatch(updateQuantity({ name: item.name, quantity: 0 }));
+            dispatch(removeItem(item));
+        }
     };
 
     const handleRemove = (item) => {
-
+        dispatch(removeItem(item));
     };
 
     const calculateTotalCost = (item) => {
+        return item.quantity * parseFloat(item.cost.substring(1));
+    };
 
+    const handleCheckoutShopping = (e) => {
+        alert("Funtionality to be added for future referece");
     };
 
     return (
@@ -37,7 +47,7 @@ const CartItem = ({ onContinueShopping }) => {
             <div>
                 {cart.map(item => (
                     <div className="cart-item" key={item.name}>
-                        <img className="cart-item-image" scr={item.image} alt={item.name} />
+                        <img className="cart-item-image" src={item.image} alt={item.name} />
                         <div className="cart-item-details">
                             <div className="cart-item-name">{item.name}</div>
                             <div className="cart-item-cost">{item.cost}</div>
@@ -56,7 +66,7 @@ const CartItem = ({ onContinueShopping }) => {
             <div className="continue_shopping_btn">
                 <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
                 <br />
-                <button className="get-started-button1">Checkout</button>
+                <button className="get-started-button1" onClick={(e) => handleCheckoutShopping(e)}>Checkout</button>
             </div>
         </div >
     );
