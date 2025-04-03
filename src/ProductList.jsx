@@ -48,17 +48,13 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
         setShowCart(false); // Hide the cart when navigating to About Us
+        syncCart();
     };
 
     const handleContinueShopping = (e) => {
         e.preventDefault();
         setShowCart(false);
-
-        //clear the addedToCart state
-        Object.keys(addedToCart).forEach(key => setAddedToCart((prevState) => ({ ...prevState, [key]: false, })));
-
-        //update for items still in cart
-        cart.forEach(item => setAddedToCart((prevState) => ({ ...prevState, [item.name]: true })));
+        syncCart();
     };
 
     const handleAddToCart = (item) => {
@@ -68,6 +64,14 @@ function ProductList({ onHomeClick }) {
 
     const calculateItemsInCart = () => {
         return cart.length;
+    };
+
+    const syncCart = () => {
+        //clear the addedToCart state
+        Object.keys(addedToCart).forEach(key => setAddedToCart((prevState) => ({ ...prevState, [key]: false, })));
+
+        //update for items still in cart
+        cart.forEach(item => setAddedToCart((prevState) => ({ ...prevState, [item.name]: true })));
     };
 
     const plantsArray = [
@@ -294,8 +298,9 @@ function ProductList({ onHomeClick }) {
                 </div>
                 <div style={styleObjUl}>
                     <div><a href="#" onClick={(e) => handlePlantsClick(e)} style={styleA}>Plants</a></div>
-                    <div><span className="cart_quantity_count">{calculateItemsInCart()}</span>
+                    <div>
                         <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}>
+                            <span className="cart_quantity_count">{calculateItemsInCart()}</span>
                             <h1 className='cart'>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" id="IconChangeColor" height="68" width="68">
                                     <rect width="156" height="156" fill="none"></rect>
